@@ -80,6 +80,7 @@ class _hx_AnonObject:
 
 
 class Enum:
+    _hx_class_name = "Enum"
     __slots__ = ("tag", "index", "params")
 
     def __init__(self,tag,index,params):
@@ -104,6 +105,7 @@ class Class: pass
 
 
 class Date:
+    _hx_class_name = "Date"
     __slots__ = ("date", "dateUTC")
 
     def __init__(self,year,month,day,hour,_hx_min,sec):
@@ -226,6 +228,7 @@ class Date:
 
 
 class EReg:
+    _hx_class_name = "EReg"
     __slots__ = ("pattern", "matchObj", "_hx_global")
 
     def __init__(self,r,opt):
@@ -360,6 +363,7 @@ class EReg:
 
 
 class _EnumValue_EnumValue_Impl_:
+    _hx_class_name = "_EnumValue.EnumValue_Impl_"
     __slots__ = ()
 
     @staticmethod
@@ -368,6 +372,7 @@ class _EnumValue_EnumValue_Impl_:
 
 
 class IntIterator:
+    _hx_class_name = "IntIterator"
     __slots__ = ("min", "max")
 
     def __init__(self,_hx_min,_hx_max):
@@ -394,6 +399,7 @@ class IntIterator:
 
 
 class Reflect:
+    _hx_class_name = "Reflect"
     __slots__ = ()
 
     @staticmethod
@@ -539,6 +545,7 @@ class Reflect:
 
 
 class Std:
+    _hx_class_name = "Std"
     __slots__ = ()
 
     @staticmethod
@@ -815,6 +822,7 @@ class Dynamic: pass
 
 
 class StringBuf:
+    _hx_class_name = "StringBuf"
     __slots__ = ("b",)
 
     def __init__(self):
@@ -851,6 +859,7 @@ class StringBuf:
 
 
 class haxe_SysTools:
+    _hx_class_name = "haxe.SysTools"
     __slots__ = ()
 
     @staticmethod
@@ -930,6 +939,7 @@ class haxe_SysTools:
 
 
 class StringTools:
+    _hx_class_name = "StringTools"
     __slots__ = ()
 
     @staticmethod
@@ -1182,6 +1192,7 @@ class StringTools:
 
 
 class sys_FileSystem:
+    _hx_class_name = "sys.FileSystem"
     __slots__ = ()
 
     @staticmethod
@@ -1229,11 +1240,14 @@ class sys_FileSystem:
 
 
 class haxe_IMap:
+    _hx_class_name = "haxe.IMap"
     __slots__ = ()
 
 
 class haxe_ds_StringMap:
+    _hx_class_name = "haxe.ds.StringMap"
     __slots__ = ("h",)
+    _hx_interfaces = [haxe_IMap]
 
     def __init__(self):
         self.h = dict()
@@ -1295,6 +1309,7 @@ class haxe_ds_StringMap:
 
 
 class python_HaxeIterator:
+    _hx_class_name = "python.HaxeIterator"
     __slots__ = ("it", "x", "has", "checked")
 
     def __init__(self,it):
@@ -1333,6 +1348,7 @@ class python_HaxeIterator:
 
 
 class Sys:
+    _hx_class_name = "Sys"
     __slots__ = ()
 
     @staticmethod
@@ -1508,6 +1524,8 @@ class Sys:
 
 class ValueType(Enum):
     __slots__ = ()
+    _hx_class_name = "ValueType"
+    _hx_constructs = ["TNull", "TInt", "TFloat", "TBool", "TObject", "TFunction", "TClass", "TEnum", "TUnknown"]
 
     @staticmethod
     def TClass(c):
@@ -1526,6 +1544,7 @@ ValueType.TUnknown = ValueType("TUnknown", 8, ())
 
 
 class Type:
+    _hx_class_name = "Type"
     __slots__ = ()
 
     @staticmethod
@@ -1740,18 +1759,232 @@ class Type:
         return ret
 
 
+class carloancalculator_Calc:
+    _hx_class_name = "carloancalculator.Calc"
+    __slots__ = ()
+
+    def __init__(self):
+        pass
+
+    def calcPayments(self,newCarPrice,tradeInAllowance,tradeInLoanBalance,downPaymentAndRebates,loanDuration,salesTaxRate,interestRate):
+        tax = ((salesTaxRate / 100.) * ((newCarPrice - tradeInAllowance)))
+        principal = ((((newCarPrice - tradeInAllowance) + tradeInLoanBalance) - downPaymentAndRebates) + tax)
+        v = (principal * 100)
+        principal = (((v if (((v == Math.POSITIVE_INFINITY) or ((v == Math.NEGATIVE_INFINITY)))) else (Math.NaN if (python_lib_Math.isnan(v)) else Math.floor((v + 0.5))))) / 100.0)
+        ret = list()
+        x = None
+        try:
+            x = int(loanDuration)
+        except BaseException as _g:
+            None
+            x = None
+        x1 = self.calcPay(principal,interestRate,12,x,"Monthly")
+        ret.append(x1)
+        x = self.calcPay(principal,interestRate,26,Math.ceil((loanDuration * 2.16666666666666652)),"Bi-Weekly")
+        ret.append(x)
+        x = self.calcPay(principal,interestRate,52,Math.ceil((loanDuration * 4.33333333333333304)),"Weekly")
+        ret.append(x)
+        return ret
+
+    def calcAffordability(self,monthlyPayment,tradeInAllowance,tradeInLoanBalance,downPaymentAndRebates,loanDuration,salesTaxRate,interestRate):
+        taxrate = (salesTaxRate / 100.)
+        interest = 0
+        aftertax = (monthlyPayment * loanDuration)
+        beforetax = (aftertax / ((1. + taxrate)))
+        tax = (aftertax - beforetax)
+        price = beforetax
+        if (interestRate > 0):
+            M = monthlyPayment
+            q = 12
+            i = (interestRate / 100.)
+            n = (loanDuration / 12.0)
+            P = ((M * ((1.0 - Math.pow((1.0 + ((i / q))),((-1. * n) * q))))) * ((q / i)))
+            I = (((M * n) * q) - P)
+            aftertax = (((P + downPaymentAndRebates) + tradeInAllowance) - tradeInLoanBalance)
+            interest = I
+            rebates = tradeInAllowance
+            beforetax = ((((taxrate * rebates) + aftertax)) / ((1. + taxrate)))
+            tax = (aftertax - beforetax)
+            price = beforetax
+        total = ((price + tax) + interest)
+        v = (price * 100)
+        v1 = (tax * 100)
+        v2 = (interest * 100)
+        v3 = (total * 100)
+        return _hx_AnonObject({'price': (((v if (((v == Math.POSITIVE_INFINITY) or ((v == Math.NEGATIVE_INFINITY)))) else (Math.NaN if (python_lib_Math.isnan(v)) else Math.floor((v + 0.5))))) / 100.0), 'tax': (((v1 if (((v1 == Math.POSITIVE_INFINITY) or ((v1 == Math.NEGATIVE_INFINITY)))) else (Math.NaN if (python_lib_Math.isnan(v1)) else Math.floor((v1 + 0.5))))) / 100.0), 'interest': (((v2 if (((v2 == Math.POSITIVE_INFINITY) or ((v2 == Math.NEGATIVE_INFINITY)))) else (Math.NaN if (python_lib_Math.isnan(v2)) else Math.floor((v2 + 0.5))))) / 100.0), 'total': (((v3 if (((v3 == Math.POSITIVE_INFINITY) or ((v3 == Math.NEGATIVE_INFINITY)))) else (Math.NaN if (python_lib_Math.isnan(v3)) else Math.floor((v3 + 0.5))))) / 100.0)})
+
+    def calcPay(self,principal,annualInterestRatePercent,paymentsPerYear,totalPayments,frequencyString):
+        q = paymentsPerYear
+        i = (annualInterestRatePercent / 100.)
+        P = principal
+        n = (totalPayments / ((1.0 * paymentsPerYear)))
+        mden = (q * ((1.0 - Math.pow((1.0 + ((i / q))),((-1.0 * n) * q)))))
+        M = ((P * i) / mden)
+        I = (((M * n) * q) - P)
+        v = (M * 100)
+        v1 = (I * 100)
+        return _hx_AnonObject({'frequency': frequencyString, 'payment': (((v if (((v == Math.POSITIVE_INFINITY) or ((v == Math.NEGATIVE_INFINITY)))) else (Math.NaN if (python_lib_Math.isnan(v)) else Math.floor((v + 0.5))))) / 100.0), 'interest': (((v1 if (((v1 == Math.POSITIVE_INFINITY) or ((v1 == Math.NEGATIVE_INFINITY)))) else (Math.NaN if (python_lib_Math.isnan(v1)) else Math.floor((v1 + 0.5))))) / 100.0)})
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):        pass
+
+
 class carloancalculator_CarLoanCalculator:
-    __slots__ = ("maglev",)
+    _hx_class_name = "carloancalculator.CarLoanCalculator"
+    __slots__ = ("maglev", "calc")
 
     def __init__(self,maglev):
         self.maglev = maglev
+        self.calc = carloancalculator_Calc()
+        self.registerMyMethods()
+
+    def registerMyMethods(self):
+        _gthis = self
+        def _hx_local_15(args):
+            def _hx_local_1():
+                _hx_local_0 = args.get(0)
+                if (Std.isOfType(_hx_local_0,maglev_MagLevNumber) or ((_hx_local_0 is None))):
+                    _hx_local_0
+                else:
+                    raise "Class cast error"
+                return _hx_local_0
+            newCarPrice = (_hx_local_1()).getFloat()
+            def _hx_local_3():
+                _hx_local_2 = args.get(1)
+                if (Std.isOfType(_hx_local_2,maglev_MagLevNumber) or ((_hx_local_2 is None))):
+                    _hx_local_2
+                else:
+                    raise "Class cast error"
+                return _hx_local_2
+            tradeInAllowance = (_hx_local_3()).getFloat()
+            def _hx_local_5():
+                _hx_local_4 = args.get(2)
+                if (Std.isOfType(_hx_local_4,maglev_MagLevNumber) or ((_hx_local_4 is None))):
+                    _hx_local_4
+                else:
+                    raise "Class cast error"
+                return _hx_local_4
+            tradeInLoanBalance = (_hx_local_5()).getFloat()
+            def _hx_local_7():
+                _hx_local_6 = args.get(3)
+                if (Std.isOfType(_hx_local_6,maglev_MagLevNumber) or ((_hx_local_6 is None))):
+                    _hx_local_6
+                else:
+                    raise "Class cast error"
+                return _hx_local_6
+            downPaymentAndRebates = (_hx_local_7()).getFloat()
+            def _hx_local_9():
+                _hx_local_8 = args.get(4)
+                if (Std.isOfType(_hx_local_8,maglev_MagLevNumber) or ((_hx_local_8 is None))):
+                    _hx_local_8
+                else:
+                    raise "Class cast error"
+                return _hx_local_8
+            loanDuration = (_hx_local_9()).getFloat()
+            def _hx_local_11():
+                _hx_local_10 = args.get(5)
+                if (Std.isOfType(_hx_local_10,maglev_MagLevNumber) or ((_hx_local_10 is None))):
+                    _hx_local_10
+                else:
+                    raise "Class cast error"
+                return _hx_local_10
+            salesTaxRate = (_hx_local_11()).getFloat()
+            def _hx_local_13():
+                _hx_local_12 = args.get(6)
+                if (Std.isOfType(_hx_local_12,maglev_MagLevNumber) or ((_hx_local_12 is None))):
+                    _hx_local_12
+                else:
+                    raise "Class cast error"
+                return _hx_local_12
+            interestRate = (_hx_local_13()).getFloat()
+            payments = _gthis.calc.calcPayments(newCarPrice,tradeInAllowance,tradeInLoanBalance,downPaymentAndRebates,loanDuration,salesTaxRate,interestRate)
+            arr = maglev_MagLevArray.create()
+            _g = 0
+            while (_g < len(payments)):
+                payment = (payments[_g] if _g >= 0 and _g < len(payments) else None)
+                _g = (_g + 1)
+                obj = maglev_MagLevObject.create()
+                obj.set("frequency",maglev_MagLevString.fromString(payment.frequency))
+                obj.set("payment",maglev_MagLevNumber.fromFloat(payment.payment))
+                obj.set("interest",maglev_MagLevNumber.fromFloat(payment.interest))
+                arr.push(obj)
+            return maglev_MagLevResult.fromResult(arr)
+        self.maglev.register("CarLoanCalculator.CalcPayments",maglev_MagLevFunction.fromFunction(_hx_local_15))
+        def _hx_local_30(args):
+            def _hx_local_17():
+                _hx_local_16 = args.get(0)
+                if (Std.isOfType(_hx_local_16,maglev_MagLevNumber) or ((_hx_local_16 is None))):
+                    _hx_local_16
+                else:
+                    raise "Class cast error"
+                return _hx_local_16
+            monthlyPayment = (_hx_local_17()).getFloat()
+            def _hx_local_19():
+                _hx_local_18 = args.get(1)
+                if (Std.isOfType(_hx_local_18,maglev_MagLevNumber) or ((_hx_local_18 is None))):
+                    _hx_local_18
+                else:
+                    raise "Class cast error"
+                return _hx_local_18
+            tradeInAllowance = (_hx_local_19()).getFloat()
+            def _hx_local_21():
+                _hx_local_20 = args.get(2)
+                if (Std.isOfType(_hx_local_20,maglev_MagLevNumber) or ((_hx_local_20 is None))):
+                    _hx_local_20
+                else:
+                    raise "Class cast error"
+                return _hx_local_20
+            tradeInLoanBalance = (_hx_local_21()).getFloat()
+            def _hx_local_23():
+                _hx_local_22 = args.get(3)
+                if (Std.isOfType(_hx_local_22,maglev_MagLevNumber) or ((_hx_local_22 is None))):
+                    _hx_local_22
+                else:
+                    raise "Class cast error"
+                return _hx_local_22
+            downPaymentAndRebates = (_hx_local_23()).getFloat()
+            def _hx_local_25():
+                _hx_local_24 = args.get(4)
+                if (Std.isOfType(_hx_local_24,maglev_MagLevNumber) or ((_hx_local_24 is None))):
+                    _hx_local_24
+                else:
+                    raise "Class cast error"
+                return _hx_local_24
+            loanDuration = (_hx_local_25()).getFloat()
+            def _hx_local_27():
+                _hx_local_26 = args.get(5)
+                if (Std.isOfType(_hx_local_26,maglev_MagLevNumber) or ((_hx_local_26 is None))):
+                    _hx_local_26
+                else:
+                    raise "Class cast error"
+                return _hx_local_26
+            salesTaxRate = (_hx_local_27()).getFloat()
+            def _hx_local_29():
+                _hx_local_28 = args.get(6)
+                if (Std.isOfType(_hx_local_28,maglev_MagLevNumber) or ((_hx_local_28 is None))):
+                    _hx_local_28
+                else:
+                    raise "Class cast error"
+                return _hx_local_28
+            interestRate = (_hx_local_29()).getFloat()
+            result = _gthis.calc.calcAffordability(monthlyPayment,tradeInAllowance,tradeInLoanBalance,downPaymentAndRebates,loanDuration,salesTaxRate,interestRate)
+            obj = maglev_MagLevObject.create()
+            obj.set("price",maglev_MagLevNumber.fromFloat(result.price))
+            obj.set("tax",maglev_MagLevNumber.fromFloat(result.tax))
+            obj.set("interest",maglev_MagLevNumber.fromFloat(result.interest))
+            obj.set("total",maglev_MagLevNumber.fromFloat(result.total))
+            return maglev_MagLevResult.fromResult(obj)
+        self.maglev.register("CarLoanCalculator.CalcAffordability",maglev_MagLevFunction.fromFunction(_hx_local_30))
 
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.maglev = None
+        _hx_o.calc = None
 
 class haxe_StackItem(Enum):
     __slots__ = ()
+    _hx_class_name = "haxe.StackItem"
+    _hx_constructs = ["CFunction", "Module", "FilePos", "Method", "LocalFunction"]
 
     @staticmethod
     def Module(m):
@@ -1772,6 +2005,7 @@ haxe_StackItem.CFunction = haxe_StackItem("CFunction", 0, ())
 
 
 class haxe__CallStack_CallStack_Impl_:
+    _hx_class_name = "haxe._CallStack.CallStack_Impl_"
     __slots__ = ()
     length = None
 
@@ -1982,7 +2216,11 @@ class haxe__CallStack_CallStack_Impl_:
 
 
 class haxe_Exception(Exception):
+    _hx_class_name = "haxe.Exception"
     __slots__ = ("_hx___exceptionStack", "_hx___nativeStack", "_hx___skipStack", "_hx___nativeException", "_hx___previousException")
+    _hx_interfaces = []
+    _hx_super = Exception
+
 
     def __init__(self,message,previous = None,native = None):
         self._hx___previousException = None
@@ -2088,6 +2326,7 @@ class haxe_Exception(Exception):
 
 
 class haxe__Int32_Int32_Impl_:
+    _hx_class_name = "haxe._Int32.Int32_Impl_"
     __slots__ = ()
 
     @staticmethod
@@ -2216,6 +2455,7 @@ class haxe__Int32_Int32_Impl_:
 
 
 class haxe__Int64_Int64_Impl_:
+    _hx_class_name = "haxe._Int64.Int64_Impl_"
     __slots__ = ()
     high = None
     low = None
@@ -2957,6 +3197,7 @@ class haxe__Int64_Int64_Impl_:
 
 
 class haxe__Int64____Int64:
+    _hx_class_name = "haxe._Int64.___Int64"
     __slots__ = ("high", "low")
 
     def __init__(self,high,low):
@@ -2973,6 +3214,7 @@ class haxe__Int64____Int64:
 
 
 class haxe_Int64Helper:
+    _hx_class_name = "haxe.Int64Helper"
     __slots__ = ()
 
     @staticmethod
@@ -3156,6 +3398,7 @@ class haxe_Int64Helper:
 
 
 class haxe_NativeStackTrace:
+    _hx_class_name = "haxe.NativeStackTrace"
     __slots__ = ()
 
     @staticmethod
@@ -3199,7 +3442,11 @@ class haxe_NativeStackTrace:
 
 
 class haxe_ValueException(haxe_Exception):
+    _hx_class_name = "haxe.ValueException"
     __slots__ = ("value",)
+    _hx_interfaces = []
+    _hx_super = haxe_Exception
+
 
     def __init__(self,value,previous = None,native = None):
         self.value = None
@@ -3219,7 +3466,9 @@ class haxe_ValueException(haxe_Exception):
 
 
 class haxe_ds_BalancedTree:
+    _hx_class_name = "haxe.ds.BalancedTree"
     __slots__ = ("root",)
+    _hx_interfaces = [haxe_IMap]
 
     def __init__(self):
         self.root = None
@@ -3379,6 +3628,7 @@ class haxe_ds_BalancedTree:
 
 
 class haxe_ds_TreeNode:
+    _hx_class_name = "haxe.ds.TreeNode"
     __slots__ = ("left", "right", "key", "value", "_height")
 
     def __init__(self,l,k,v,r,h = None):
@@ -3416,7 +3666,11 @@ class haxe_ds_TreeNode:
 
 
 class haxe_ds_EnumValueMap(haxe_ds_BalancedTree):
+    _hx_class_name = "haxe.ds.EnumValueMap"
     __slots__ = ()
+    _hx_interfaces = [haxe_IMap]
+    _hx_super = haxe_ds_BalancedTree
+
 
     def __init__(self):
         super().__init__()
@@ -3463,6 +3717,7 @@ class haxe_ds_EnumValueMap(haxe_ds_BalancedTree):
 
 
 class haxe_ds__HashMap_HashMap_Impl_:
+    _hx_class_name = "haxe.ds._HashMap.HashMap_Impl_"
     __slots__ = ()
 
     @staticmethod
@@ -3517,6 +3772,7 @@ class haxe_ds__HashMap_HashMap_Impl_:
 
 
 class haxe_ds__HashMap_HashMapData:
+    _hx_class_name = "haxe.ds._HashMap.HashMapData"
     __slots__ = ("keys", "values")
 
     def __init__(self):
@@ -3530,7 +3786,9 @@ class haxe_ds__HashMap_HashMapData:
 
 
 class haxe_ds_IntMap:
+    _hx_class_name = "haxe.ds.IntMap"
     __slots__ = ("h",)
+    _hx_interfaces = [haxe_IMap]
 
     def __init__(self):
         self.h = dict()
@@ -3591,6 +3849,7 @@ class haxe_ds_IntMap:
 
 
 class haxe_ds__Map_Map_Impl_:
+    _hx_class_name = "haxe.ds._Map.Map_Impl_"
     __slots__ = ()
 
     @staticmethod
@@ -3668,7 +3927,9 @@ class haxe_ds__Map_Map_Impl_:
 
 
 class haxe_ds_ObjectMap:
+    _hx_class_name = "haxe.ds.ObjectMap"
     __slots__ = ("h",)
+    _hx_interfaces = [haxe_IMap]
 
     def __init__(self):
         self.h = dict()
@@ -3729,6 +3990,7 @@ class haxe_ds_ObjectMap:
 
 
 class haxe_ds__ReadOnlyArray_ReadOnlyArray_Impl_:
+    _hx_class_name = "haxe.ds._ReadOnlyArray.ReadOnlyArray_Impl_"
     __slots__ = ()
     length = None
 
@@ -3742,7 +4004,9 @@ class haxe_ds__ReadOnlyArray_ReadOnlyArray_Impl_:
 
 
 class haxe_ds_WeakMap:
+    _hx_class_name = "haxe.ds.WeakMap"
     __slots__ = ()
+    _hx_interfaces = [haxe_IMap]
 
     def __init__(self):
         raise haxe_Exception.thrown("Not implemented for this platform")
@@ -3782,6 +4046,7 @@ class haxe_ds_WeakMap:
 
 
 class haxe_io_Bytes:
+    _hx_class_name = "haxe.io.Bytes"
     __slots__ = ("length", "b")
 
     def __init__(self,length,b):
@@ -3978,6 +4243,7 @@ class haxe_io_Bytes:
 
 
 class haxe_io_BytesBuffer:
+    _hx_class_name = "haxe.io.BytesBuffer"
     __slots__ = ("b",)
 
     def __init__(self):
@@ -4027,11 +4293,14 @@ class haxe_io_BytesBuffer:
 
 class haxe_io_Encoding(Enum):
     __slots__ = ()
+    _hx_class_name = "haxe.io.Encoding"
+    _hx_constructs = ["UTF8", "RawNative"]
 haxe_io_Encoding.UTF8 = haxe_io_Encoding("UTF8", 0, ())
 haxe_io_Encoding.RawNative = haxe_io_Encoding("RawNative", 1, ())
 
 
 class haxe_io_Eof:
+    _hx_class_name = "haxe.io.Eof"
     __slots__ = ()
 
     def __init__(self):
@@ -4045,6 +4314,8 @@ class haxe_io_Eof:
 
 class haxe_io_Error(Enum):
     __slots__ = ()
+    _hx_class_name = "haxe.io.Error"
+    _hx_constructs = ["Blocked", "Overflow", "OutsideBounds", "Custom"]
 
     @staticmethod
     def Custom(e):
@@ -4055,6 +4326,7 @@ haxe_io_Error.OutsideBounds = haxe_io_Error("OutsideBounds", 2, ())
 
 
 class haxe_io_FPHelper:
+    _hx_class_name = "haxe.io.FPHelper"
     __slots__ = ()
 
     @staticmethod
@@ -4244,6 +4516,7 @@ class haxe_io_FPHelper:
 
 
 class haxe_io_Input:
+    _hx_class_name = "haxe.io.Input"
     __slots__ = ("bigEndian",)
 
     def readByte(self):
@@ -4421,6 +4694,7 @@ class haxe_io_Input:
 
 
 class haxe_io_Output:
+    _hx_class_name = "haxe.io.Output"
     __slots__ = ("bigEndian",)
 
     def writeByte(self,c):
@@ -4558,6 +4832,7 @@ class haxe_io_Output:
 
 
 class haxe_io_Path:
+    _hx_class_name = "haxe.io.Path"
     __slots__ = ("dir", "file", "ext", "backslash")
 
     def __init__(self,path):
@@ -4817,6 +5092,7 @@ class haxe_io_Path:
 
 
 class haxe_iterators_ArrayIterator:
+    _hx_class_name = "haxe.iterators.ArrayIterator"
     __slots__ = ("array", "current")
 
     def __init__(self,array):
@@ -4843,6 +5119,7 @@ class haxe_iterators_ArrayIterator:
 
 
 class haxe_iterators_ArrayKeyValueIterator:
+    _hx_class_name = "haxe.iterators.ArrayKeyValueIterator"
     __slots__ = ("current", "array")
 
     def __init__(self,array):
@@ -4869,6 +5146,7 @@ class haxe_iterators_ArrayKeyValueIterator:
 
 
 class haxe_iterators_HashMapKeyValueIterator:
+    _hx_class_name = "haxe.iterators.HashMapKeyValueIterator"
     __slots__ = ("map", "keys")
 
     def __init__(self,_hx_map):
@@ -4891,6 +5169,7 @@ class haxe_iterators_HashMapKeyValueIterator:
 
 
 class haxe_iterators_MapKeyValueIterator:
+    _hx_class_name = "haxe.iterators.MapKeyValueIterator"
     __slots__ = ("map", "keys")
 
     def __init__(self,_hx_map):
@@ -4911,6 +5190,7 @@ class haxe_iterators_MapKeyValueIterator:
 
 
 class haxe_iterators_StringIterator:
+    _hx_class_name = "haxe.iterators.StringIterator"
     __slots__ = ("offset", "s")
 
     def __init__(self,s):
@@ -4936,6 +5216,7 @@ class haxe_iterators_StringIterator:
 
 
 class haxe_iterators_StringIteratorUnicode:
+    _hx_class_name = "haxe.iterators.StringIteratorUnicode"
     __slots__ = ("offset", "s")
 
     def __init__(self,s):
@@ -4965,6 +5246,7 @@ class haxe_iterators_StringIteratorUnicode:
 
 
 class haxe_iterators_StringKeyValueIterator:
+    _hx_class_name = "haxe.iterators.StringKeyValueIterator"
     __slots__ = ("offset", "s")
 
     def __init__(self,s):
@@ -4988,6 +5270,7 @@ class haxe_iterators_StringKeyValueIterator:
 
 
 class python_Boot:
+    _hx_class_name = "python.Boot"
     __slots__ = ()
 
     @staticmethod
@@ -5514,6 +5797,7 @@ class python_Boot:
 
 
 class python_HaxeIterable:
+    _hx_class_name = "python.HaxeIterable"
     __slots__ = ("x",)
 
     def __init__(self,x):
@@ -5528,6 +5812,7 @@ class python_HaxeIterable:
 
 
 class python__KwArgs_KwArgs_Impl_:
+    _hx_class_name = "python._KwArgs.KwArgs_Impl_"
     __slots__ = ()
 
     @staticmethod
@@ -5563,6 +5848,7 @@ class python__KwArgs_KwArgs_Impl_:
 
 
 class python_Lib:
+    _hx_class_name = "python.Lib"
     __slots__ = ()
     __name__ = None
 
@@ -5638,6 +5924,7 @@ class python_Lib:
 
 
 class python__NativeIterable_NativeIterable_Impl_:
+    _hx_class_name = "python._NativeIterable.NativeIterable_Impl_"
     __slots__ = ()
 
     @staticmethod
@@ -5650,6 +5937,7 @@ class python__NativeIterable_NativeIterable_Impl_:
 
 
 class python__NativeIterator_NativeIterator_Impl_:
+    _hx_class_name = "python._NativeIterator.NativeIterator_Impl_"
     __slots__ = ()
 
     @staticmethod
@@ -5663,6 +5951,7 @@ class python__NativeIterator_NativeIterator_Impl_:
 
 
 class python_NativeStringTools:
+    _hx_class_name = "python.NativeStringTools"
     __slots__ = ()
 
     @staticmethod
@@ -5699,6 +5988,7 @@ class python_NativeStringTools:
 
 
 class python__VarArgs_VarArgs_Impl_:
+    _hx_class_name = "python._VarArgs.VarArgs_Impl_"
     __slots__ = ()
 
     @staticmethod
@@ -5724,6 +6014,7 @@ class python__VarArgs_VarArgs_Impl_:
 
 
 class python_internal_ArrayImpl:
+    _hx_class_name = "python.internal.ArrayImpl"
     __slots__ = ()
 
     @staticmethod
@@ -5907,6 +6198,7 @@ class python_internal_ArrayImpl:
 
 
 class HxOverrides:
+    _hx_class_name = "HxOverrides"
     __slots__ = ()
 
     @staticmethod
@@ -6091,10 +6383,12 @@ class HxOverrides:
 
 
 class python_internal_Internal:
+    _hx_class_name = "python.internal.Internal"
     __slots__ = ()
 
 
 class python_internal_MethodClosure:
+    _hx_class_name = "python.internal.MethodClosure"
     __slots__ = ("obj", "func")
 
     def __init__(self,obj,func):
@@ -6111,6 +6405,7 @@ class python_internal_MethodClosure:
 
 
 class HxString:
+    _hx_class_name = "HxString"
     __slots__ = ()
 
     @staticmethod
@@ -6227,7 +6522,11 @@ class HxString:
 
 
 class python_io_NativeInput(haxe_io_Input):
+    _hx_class_name = "python.io.NativeInput"
     __slots__ = ("stream", "wasEof")
+    _hx_interfaces = []
+    _hx_super = haxe_io_Input
+
 
     def __init__(self,s):
         self.wasEof = None
@@ -6276,11 +6575,16 @@ class python_io_NativeInput(haxe_io_Input):
 
 
 class python_io_IInput:
+    _hx_class_name = "python.io.IInput"
     __slots__ = ("bigEndian",)
 
 
 class python_io_NativeBytesInput(python_io_NativeInput):
+    _hx_class_name = "python.io.NativeBytesInput"
     __slots__ = ()
+    _hx_interfaces = [python_io_IInput]
+    _hx_super = python_io_NativeInput
+
 
     def __init__(self,stream):
         super().__init__(stream)
@@ -6303,18 +6607,28 @@ class python_io_NativeBytesInput(python_io_NativeInput):
 
 
 class python_io_IFileInput:
+    _hx_class_name = "python.io.IFileInput"
     __slots__ = ()
+    _hx_interfaces = [python_io_IInput]
 
 
 class python_io_FileBytesInput(python_io_NativeBytesInput):
+    _hx_class_name = "python.io.FileBytesInput"
     __slots__ = ()
+    _hx_interfaces = [python_io_IFileInput]
+    _hx_super = python_io_NativeBytesInput
+
 
     def __init__(self,stream):
         super().__init__(stream)
 
 
 class python_io_NativeOutput(haxe_io_Output):
+    _hx_class_name = "python.io.NativeOutput"
     __slots__ = ("stream",)
+    _hx_interfaces = []
+    _hx_super = haxe_io_Output
+
 
     def __init__(self,stream):
         self.stream = None
@@ -6344,7 +6658,11 @@ class python_io_NativeOutput(haxe_io_Output):
 
 
 class python_io_NativeBytesOutput(python_io_NativeOutput):
+    _hx_class_name = "python.io.NativeBytesOutput"
     __slots__ = ()
+    _hx_interfaces = []
+    _hx_super = python_io_NativeOutput
+
 
     def __init__(self,stream):
         super().__init__(stream)
@@ -6366,22 +6684,33 @@ class python_io_NativeBytesOutput(python_io_NativeOutput):
 
 
 class python_io_IOutput:
+    _hx_class_name = "python.io.IOutput"
     __slots__ = ("bigEndian",)
 
 
 class python_io_IFileOutput:
+    _hx_class_name = "python.io.IFileOutput"
     __slots__ = ()
+    _hx_interfaces = [python_io_IOutput]
 
 
 class python_io_FileBytesOutput(python_io_NativeBytesOutput):
+    _hx_class_name = "python.io.FileBytesOutput"
     __slots__ = ()
+    _hx_interfaces = [python_io_IFileOutput]
+    _hx_super = python_io_NativeBytesOutput
+
 
     def __init__(self,stream):
         super().__init__(stream)
 
 
 class python_io_NativeTextInput(python_io_NativeInput):
+    _hx_class_name = "python.io.NativeTextInput"
     __slots__ = ()
+    _hx_interfaces = [python_io_IInput]
+    _hx_super = python_io_NativeInput
+
 
     def __init__(self,stream):
         super().__init__(stream)
@@ -6404,14 +6733,22 @@ class python_io_NativeTextInput(python_io_NativeInput):
 
 
 class python_io_FileTextInput(python_io_NativeTextInput):
+    _hx_class_name = "python.io.FileTextInput"
     __slots__ = ()
+    _hx_interfaces = [python_io_IFileInput]
+    _hx_super = python_io_NativeTextInput
+
 
     def __init__(self,stream):
         super().__init__(stream)
 
 
 class python_io_NativeTextOutput(python_io_NativeOutput):
+    _hx_class_name = "python.io.NativeTextOutput"
     __slots__ = ()
+    _hx_interfaces = []
+    _hx_super = python_io_NativeOutput
+
 
     def __init__(self,stream):
         super().__init__(stream)
@@ -6432,13 +6769,18 @@ class python_io_NativeTextOutput(python_io_NativeOutput):
 
 
 class python_io_FileTextOutput(python_io_NativeTextOutput):
+    _hx_class_name = "python.io.FileTextOutput"
     __slots__ = ()
+    _hx_interfaces = [python_io_IFileOutput]
+    _hx_super = python_io_NativeTextOutput
+
 
     def __init__(self,stream):
         super().__init__(stream)
 
 
 class python_io_IoTools:
+    _hx_class_name = "python.io.IoTools"
     __slots__ = ()
 
     @staticmethod
@@ -6490,6 +6832,7 @@ class python_io_IoTools:
 
 
 class python_lib__Re_Choice_Impl_:
+    _hx_class_name = "python.lib._Re.Choice_Impl_"
     __slots__ = ()
 
     @staticmethod
@@ -6502,6 +6845,7 @@ class python_lib__Re_Choice_Impl_:
 
 
 class python_lib__Re_RegexHelper:
+    _hx_class_name = "python.lib._Re.RegexHelper"
     __slots__ = ()
 
     @staticmethod
@@ -6516,7 +6860,11 @@ class python_lib__Re_RegexHelper:
 
 
 class sys_io_FileInput(haxe_io_Input):
+    _hx_class_name = "sys.io.FileInput"
     __slots__ = ("impl",)
+    _hx_interfaces = []
+    _hx_super = haxe_io_Input
+
 
     def __init__(self,impl):
         self.impl = impl
@@ -6590,7 +6938,11 @@ class sys_io_FileInput(haxe_io_Input):
 
 
 class sys_io_FileOutput(haxe_io_Output):
+    _hx_class_name = "sys.io.FileOutput"
     __slots__ = ("impl",)
+    _hx_interfaces = []
+    _hx_super = haxe_io_Output
+
 
     def __init__(self,impl):
         self.impl = impl
@@ -6661,6 +7013,8 @@ class sys_io_FileOutput(haxe_io_Output):
 
 class sys_io_FileSeek(Enum):
     __slots__ = ()
+    _hx_class_name = "sys.io.FileSeek"
+    _hx_constructs = ["SeekBegin", "SeekCur", "SeekEnd"]
 sys_io_FileSeek.SeekBegin = sys_io_FileSeek("SeekBegin", 0, ())
 sys_io_FileSeek.SeekCur = sys_io_FileSeek("SeekCur", 1, ())
 sys_io_FileSeek.SeekEnd = sys_io_FileSeek("SeekEnd", 2, ())
