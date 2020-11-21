@@ -5,22 +5,37 @@ carloancalculator
 Contents
 ========
 
-* [carloancalculator Python Library](#carloancalculator-python-library)
-	* [Licensing Options](#licensing-options)
-	* [Support](#support)
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Licensing](#licensing)
+* [Support](#support)
 
-# carloancalculator Python Library
+# Requirements
+Python 3.x. Due to security fixes and new features Python 3.7 or later is recommended.
+pip
 
-## Licensing Options
+
+Third-party dependencies may have additional requirements.
+
+# Installation
+You can retrieve the carloancalculator package from the Python Package Index https://pypi.org/ using pip. First make sure you have python3 and python3-pip installed. Then you can start by making a `requirements.txt` file in your working directory with the carloancalculator requirement in it. You can add any other packages to your requirements here, each as a separate line.
+
+requirements.txt:
+```
+mindpowered-carloancalculator>0
+```
+Now you can use pip to install the carloancalculator package: `python3 -m pip install -r requirements.txt`
+If you would like to update the package, simply run the above command again.
 
 
+# Licensing
 Additional [licensing options][licensing] are available.
-## Support
 
-
-For bugfixes, please raise an issue in the [Issue Tracker][bugs].
+# Support
+For bug fixes, please raise an issue in the [Issue Tracker][bugs].
 
 For feature requests, and general support, please [Contact us][contact].
+
 
 
 [bugs]: https://github.com/mindpowered/car-loan-calculator-python/issues
