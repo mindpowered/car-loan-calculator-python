@@ -1,6 +1,5 @@
 import maglev
 import carloancalculator
-import persistence
 
 from typing import Any, List, Callable
 
@@ -10,9 +9,8 @@ class CarLoanCalculator:
 	calculator
 	"""
 	def __init__(self):
-		bus = maglev.maglev_MagLev.getInstance("carloancalculator")
+		bus = maglev.maglev_MagLev.getInstance("default")
 		lib = carloancalculator.carloancalculator_CarLoanCalculator(bus)
-		persistence.persistence_Persistence(bus)
 
 	def CalcPayments(self, newCarPrice: float, tradeInAllowance: float, tradeInLoanBalance: float, downPaymentAndRebates: float, loanDuration: float, salesTaxRate: float, interestRate: float) -> List[Any]:
 		"""		Calculate what the payments would be from the price of the new car and the parameters of the monthly loan payments
@@ -27,12 +25,13 @@ class CarLoanCalculator:
 		Returns:
 			payments and total interest
 		"""
-		pybus = maglev.maglev_MagLevPy.getInstance("carloancalculator")
+		pybus = maglev.maglev_MagLevPy.getInstance("default")
 		args = [newCarPrice, tradeInAllowance, tradeInLoanBalance, downPaymentAndRebates, loanDuration, salesTaxRate, interestRate]
 		ret = None
 		def CalcPayments_Ret(async_ret):
+			nonlocal ret
 			ret = async_ret
-		ret = pybus.call('CarLoanCalculator.CalcPayments', args, CalcPayments_Ret)
+		pybus.call('CarLoanCalculator.CalcPayments', args, CalcPayments_Ret)
 		return ret
 
 	def CalcAffordability(self, monthlyPayment: float, tradeInAllowance: float, tradeInLoanBalance: float, downPaymentAndRebates: float, loanDuration: float, salesTaxRate: float, interestRate: float) -> float:
@@ -48,12 +47,13 @@ class CarLoanCalculator:
 		Returns:
 			target price with tax and fees
 		"""
-		pybus = maglev.maglev_MagLevPy.getInstance("carloancalculator")
+		pybus = maglev.maglev_MagLevPy.getInstance("default")
 		args = [monthlyPayment, tradeInAllowance, tradeInLoanBalance, downPaymentAndRebates, loanDuration, salesTaxRate, interestRate]
 		ret = None
 		def CalcAffordability_Ret(async_ret):
+			nonlocal ret
 			ret = async_ret
-		ret = pybus.call('CarLoanCalculator.CalcAffordability', args, CalcAffordability_Ret)
+		pybus.call('CarLoanCalculator.CalcAffordability', args, CalcAffordability_Ret)
 		return ret
 
 
