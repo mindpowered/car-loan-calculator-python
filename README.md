@@ -42,7 +42,9 @@ If you would like to update the package, simply run the above command again.
 We are here to support using this package. If it doesn't do what you're looking for, isn't working, or you just need help, please [Contact us][contact].
 
 There is also a public [Issue Tracker][bugs] available for this package.
-
+  
+  
+![Documentation - PYTHON README - car-loan-calculator](https://www.google-analytics.com/collect?v=1&tid=UA-178768904-1&cid=555&aip=1&t=event&ec=Documentation&ea=PYTHON+README&el=car-loan-calculator)
 
 
 [bugs]: https://github.com/mindpowered/car-loan-calculator-python/issues
