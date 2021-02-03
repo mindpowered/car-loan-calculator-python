@@ -9,19 +9,16 @@ Contents
 ========
 
 * [Source Code and Documentation](#source-code-and-documentation)
-* [Licensing](#licensing)
 * [About](#about)
 * [Requirements](#requirements)
 * [Installation](#installation)
 * [Usage](#usage)
 * [Support](#support)
+* [Licensing](#licensing)
 
 # Source Code and Documentation
 - Source Code: [https://github.com/mindpowered/car-loan-calculator-python](https://github.com/mindpowered/car-loan-calculator-python)
 - Documentation: [https://mindpowered.github.io/car-loan-calculator-python](https://mindpowered.github.io/car-loan-calculator-python)
-
-# Licensing
-To obtain a version of this package under the MIT License, follow the instructions to [get a license][purchase]. The MIT License has no restrictions on commercial use and permits reuse within proprietary software.
 
 # About
 This package aims to calculate the following:
@@ -69,10 +66,13 @@ We are here to support using this package. If it doesn't do what you're looking 
 
 There is also a public [Issue Tracker][bugs] available for this package.
 
+# Licensing
+This package is released under the MIT License.
+
 
 
 [bugs]: https://github.com/mindpowered/car-loan-calculator-python/issues
-[contact]: https://mindpowered.dev/support.html?ref=car-loan-calculator-python/
+[contact]: https://mindpowered.dev/support/?ref=car-loan-calculator-python/
 [docs]: https://mindpowered.github.io/car-loan-calculator-python/
 [licensing]: https://mindpowered.dev/?ref=car-loan-calculator-python
 [purchase]: https://mindpowered.dev/purchase/
